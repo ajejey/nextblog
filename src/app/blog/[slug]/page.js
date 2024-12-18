@@ -1,13 +1,11 @@
-'use server';
-
 import { notFound } from 'next/navigation';
 import { getPostBySlug, getPosts } from '../../utils/getPosts';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
-export default async function BlogPost({ params }) {
+export default function BlogPost({ params }) {
   try {
-    const post = await getPostBySlug(params.slug);
+    const post = getPostBySlug(params.slug);
     
     return (
       <div className="container mx-auto px-4 py-8 max-w-3xl">
@@ -30,9 +28,8 @@ export default async function BlogPost({ params }) {
   }
 }
 
-export async function generateStaticParams() {
+export function generateStaticParams() {
   const posts = getPosts();
-  
   return posts.map((post) => ({
     slug: post.slug
   }));
