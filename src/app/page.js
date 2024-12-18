@@ -1,45 +1,10 @@
-'use client';
-
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
+import { getPosts } from './utils/getPosts';
 
+// Remove 'use client' since this will be a server component
 export default function Home() {
-  const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    async function fetchPosts() {
-      try {
-        const response = await fetch('/api/posts');
-        if (!response.ok) throw new Error('Failed to fetch posts');
-        const data = await response.json();
-        setPosts(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchPosts();
-  }, []);
-
-  if (loading) {
-    return (
-      <div className="container mx-auto px-4 py-8 text-center">
-        <p className="text-xl">Loading posts...</p>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="container mx-auto px-4 py-8 text-center text-red-600">
-        <p className="text-xl">Error: {error}</p>
-      </div>
-    );
-  }
+  // Get posts data during build time
+  const posts = getPosts();
 
   return (
     <main className="container mx-auto px-4 py-8">
